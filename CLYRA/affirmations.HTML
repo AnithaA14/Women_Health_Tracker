@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Affirmations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 28px;
+        }
+        select, button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ffd700;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #ffcc00;
+        }
+        #affirmation {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Affirmations</h1>
+    <p>Select your mood and get a personalized affirmation:</p>
+    <select id="mood">
+        <option value="happy">Happy</option>
+        <option value="stressed">Stressed</option>
+        <option value="sad">Sad</option>
+        <option value="motivated">Motivated</option>
+        <option value="tired">Tired</option>
+        <option value="anxious">Anxious</option>
+        <option value="grateful">Grateful</option>
+    </select>
+    <button onclick="generateAffirmation()">Get Affirmation</button>
+    <p id="affirmation"></p>
+
+    <script>
+        const messages = {
+            happy: [
+            "Keep spreading positivity because your happiness inspires others to find joy in their own lives!",
+        "Your joy is contagious, and the world becomes a better place with your bright energy and uplifting spirit!",
+        "Happiness looks good on you! Keep embracing every moment and shining your inner light wherever you go!",
+        "Enjoy every little moment life offers, because you truly deserve all the happiness and laughter in the world!",
+        "Your smile has the power to brighten someone’s day, so never stop sharing it with the world!"
+    ],
+            
+            stressed: [
+                "Take a deep breath and remind yourself that every challenge is an opportunity for growth—you are capable and strong!",
+        "You are stronger than your challenges, and no obstacle is too big when you believe in yourself and take it one step at a time!",
+        "One step at a time, progress is still progress, and every little effort you put in is leading you closer to success!",
+        "Challenges are just stepping stones to greatness, so trust yourself, keep moving forward, and don't let the pressure break you!",
+        "You’re doing better than you think! Even on tough days, your resilience shines through, and you will come out even stronger!"
+    ],
+            
+            sad: [
+                "You are loved and valued more than you realize, and no matter what you're going through, you are never alone in this journey!",
+        "This too shall pass, and brighter days are ahead, so hold on, stay strong, and keep believing in the beautiful future waiting for you!",
+        "Your feelings are completely valid, and it's okay to feel down sometimes—but always remember, you are stronger than your struggles!",
+        "Dark times may feel endless, but they will fade, and the light within you will shine brighter than ever before—never stop believing in yourself!",
+        "No matter how heavy your heart feels right now, there is always hope, love, and a better tomorrow waiting just around the corner!"
+    ],
+            
+            motivated: [
+            "Success is within your reach, and every effort you put in today is paving the way for the incredible future that awaits you!",
+        "You have the power to achieve anything you set your mind to, so stay focused, keep learning, and never stop chasing your dreams!",
+        "Keep pushing forward, because greatness awaits those who refuse to give up, even when the journey gets tough!",
+        "Your hard work and dedication will pay off in ways you never imagined—stay consistent, stay hungry, and stay confident in your abilities!",
+        "Believe in yourself and your abilities, because you are capable of achieving extraordinary things with the right mindset and determination!"
+            ],
+            tired: [
+                "Rest when you need to, because taking care of yourself is just as important as working hard—your well-being matters!",
+        "Your effort is truly appreciated, and even when you feel exhausted, remember that every small step forward is still progress!",
+        "Recharge and come back stronger, because even the greatest minds and most successful people take breaks to regain their energy!",
+        "It's okay to slow down—life is not a race, and as long as you keep moving forward, you are still on the right path!",
+        "Taking care of yourself is a priority, not a luxury, so rest, recover, and return with even more strength and passion!"
+            ],
+            anxious: [
+               "Breathe deeply and remind yourself that you are in control of your thoughts, and no fear is stronger than your courage!",
+        "You are capable of overcoming any fear, and even when anxiety feels overwhelming, remember that you have the strength to push through!",
+        "One step at a time is all it takes—focus on the present moment, and trust that you are exactly where you need to be!",
+        "You are stronger than your worries, and no challenge is too big when you believe in yourself and your ability to overcome anything!",
+        "Instead of fearing the unknown, embrace it as an opportunity for growth, learning, and becoming a stronger version of yourself!"
+    ],
+            
+            grateful: [
+                "Gratitude turns what you have into enough, and when you focus on the positives, life becomes even more beautiful!",
+        "Every little blessing in your life is a reminder of how much good surrounds you—appreciate the small moments and cherish every experience!",
+        "Appreciate the journey, not just the destination, because every step you take brings growth, wisdom, and a deeper sense of purpose!",
+        "Your gratitude attracts even more positivity into your life, so keep finding joy in the little things and watch happiness multiply!",
+        "Happiness grows where gratitude flows, and the more you acknowledge your blessings, the brighter your life will become!"
+            ]
+        };
+
+        function generateAffirmation() {
+            let mood = document.getElementById("mood").value;
+            let affirmationsList = messages[mood]; // Fix: Use 'messages' instead of 'affirmations'
+            let randomAffirmation = affirmationsList[Math.floor(Math.random() * affirmationsList.length)];
+            document.getElementById("affirmation").innerText = randomAffirmation;
+        }
+    </script>
+</body>
+</html>

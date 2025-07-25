@@ -1,0 +1,2292 @@
+index.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FemTrack - Women's Health & Diet Tracker</title>
+
+    <style>
+        /* Reset & Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #f5efef;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Navbar */
+        nav {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+        nav img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        nav a, .login-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        nav a:hover, .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        .login-btn {
+            background-color: #ff9800;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Popup styles */
+        .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    color: black; /* Ensures all text inside the popup is black */
+}
+
+        .popup input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .popup button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+        }
+        .close-btn {
+            background-color: red;
+            margin-top: 10px;
+        }
+
+
+
+        /* Floating Bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float 8s infinite ease-in-out;
+            background: radial-gradient(circle, #5e80ee, #e7e3e7);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-100px) scale(1.1); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Light/Dark Effect on Scroll */
+        body.scrolled {
+            background: linear-gradient(135deg, #2e2e2e, #1b1b1b);
+            color: #f0f0f0;
+        }
+
+        nav.scrolled {
+            background: linear-gradient(90deg, #333, #555);
+        }
+
+        nav.scrolled a:hover {
+            color: #ffa500;
+        }
+
+        .container {
+        text-align: center;
+    }
+
+    h1 {
+        padding-top: 5%;
+        font-size: 50px; /* Increase text size */
+        font-weight: bold;
+        color: #fbf8fd; /* Stylish color */
+        animation: fadeInBounce 2s ease-in-out;
+    }
+
+    @keyframes fadeInBounce {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        50% {
+            opacity: 1;
+            transform: translateY(10px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+
+    .banner-image {
+    width: 100%; /* Adjust width as needed */
+    max-width: 500px; /* Limits size */
+    display: block;
+    margin: 20px auto; /* Centers the image */
+    border-radius: 10px; /* Adds rounded corners */
+}
+
+
+
+     /* Chatbot */
+     .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #4a90e2, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: floatIcon 3s infinite ease-in-out;
+            transition: transform 0.3s ease;
+        }
+
+
+        .chatbot-icon img {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+        }
+
+        .chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes floatIcon {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+
+        .chat-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #3829be;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chat-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    color: black; /* Set text color to black */
+}
+
+
+        .chat-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chat-footer button {
+            background: #3829be;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+                /* Change color of "You" and "Bot" text */
+                strong {
+            color: #2533ac; /* Change this to any color you prefer */
+        }
+
+
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .speech-bubble {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar with Logo -->
+    <nav id="navbar">
+        <img src="logo.jpg" alt="Health Logo">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Health Dashboard</a>
+            <a href="menstrual.html">Menstrual Tracking</a>
+            <a href="mental.html">Mental Health</a>
+            <button class="login-btn" onclick="openPopup()">Login</button>
+        </div>
+    </nav>
+    
+
+
+    <div class="container">
+        <h1 class="animated-heading">Welcome to FemTrack</h1><br>
+        <p>Women's Health & Diet Guide</p>
+        <img src="ff.jpg" alt="FemTrack Banner" class="banner-image">
+    </div>
+    
+   
+
+<!-- Popup Login Form -->
+<div id="loginPopup" class="popup">
+    <h3>Login</h3>
+    <input type="text" placeholder="Username" id="username">
+    <input type="password" placeholder="Password" id="password">
+    <button onclick="login()">Login</button>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+    <p id="loginMessage" style="color: green; display: none;"></p> <!-- Success message -->
+</div>
+
+
+
+    <!-- Floating Bubbles -->
+    <div class="bubble" style="width: 60px; height: 60px; top: 20%; left: 15%; animation-duration: 6s;"></div>
+    <div class="bubble" style="width: 40px; height: 40px; top: 70%; left: 80%; animation-duration: 5s;"></div>
+    <div class="bubble" style="width: 80px; height: 80px; top: 30%; left: 80%; animation-duration: 7s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; top: 30%; left: 10%; animation-duration: 8s;"></div>
+    <div class="bubble" style="width: 50px; height: 40px; top: 70%; left: 5%; animation-duration: 8s;"></div>
+
+    <!-- Chatbot -->
+    <img src="ai.jpg" alt="Chatbot" class="chatbot-icon" onclick="toggleChat()">
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">Chat with Us</div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Ask me anything...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Personalized Greeting using sessionStorage
+        sessionStorage.setItem('user', 'Anitha');
+        const user = sessionStorage.getItem('user');
+        document.getElementById('greeting').textContent = `Welcome, ${user}!`;
+
+        // Change Theme on Scroll
+        window.addEventListener('scroll', () => {
+            const body = document.body;
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                body.classList.add('scrolled');
+                navbar.classList.add('scrolled');
+            } else {
+                body.classList.remove('scrolled');
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+
+
+
+        function login() {
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var loginMessage = document.getElementById("loginMessage");
+
+    if (username !== "" && password !== "") { // Allows any username and password
+        loginMessage.style.display = "block";
+        loginMessage.textContent = "Login successful! Redirecting...";
+        loginMessage.style.color = "green";
+
+        setTimeout(() => {
+            closePopup();
+            window.location.href = "dashboard.html"; // Redirect after login
+        }, 2000);
+    } else {
+        loginMessage.style.display = "block";
+        loginMessage.textContent = "Invalid credentials. Please try again.";
+        loginMessage.style.color = "red";
+    }
+}
+
+
+    function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
+    }
+
+    function openPopup() {
+        document.getElementById("loginPopup").style.display = "block";
+    }
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.style.display = chatContainer.style.display === 'none' ? 'flex' : 'none';
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".circle-container").addEventListener("click", function () {
+            let chatContainer = document.getElementById("chatContainer");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block"; // Show chat container
+            } else {
+                chatContainer.style.display = "none"; // Hide chat container
+            }
+        });
+    });
+
+
+        
+    function toggleChat() {
+    const chatContainer = document.getElementById('chatContainer');
+    chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
+}
+
+function sendMessage() {
+    const input = document.getElementById('userInput');
+    const chatBody = document.getElementById('chatBody');
+    
+    if (input.value.trim() !== '') {
+        chatBody.innerHTML += `<div><strong>You:</strong> ${input.value}</div>`;
+
+        const responses = {
+            "headache": "Try drinking water, resting in a dark room, or applying a cold compress to your forehead.",
+            "cold": "Stay hydrated, get plenty of rest, and try drinking warm tea with honey and lemon.",
+            "protein": "Include lean meats, eggs, beans, and nuts for muscle growth and repair.",
+            "fiber": "Eat whole grains, fruits, and vegetables to improve digestion and heart health.",
+            "iron": "Consume spinach, lentils, and red meat to prevent anemia and boost energy.",            
+            "insomnia": "Avoid caffeine before bed, maintain a consistent sleep schedule, and try relaxation techniques.",
+            "sore throat": "Drink warm liquids, gargle with salt water, and use throat lozenges.",
+            "acne": "Keep your skin clean, avoid touching your face, and use gentle skincare products.",
+            "toothache": "Rinse with warm salt water, apply a cold compress, and avoid sugary foods.",
+            "back pain": "Maintain good posture, stretch regularly, and apply a heating pad.",
+            "allergies": "Avoid allergens, keep your home clean, and take antihistamines if needed.",
+            "high blood pressure": "Reduce salt intake, exercise regularly, and manage stress.",
+            "low blood pressure": "Drink more water, eat small meals frequently, and avoid sudden position changes.",
+            "constipation": "Increase fiber intake, drink more water, and stay active.",
+            "diarrhea": "Stay hydrated, avoid dairy and fatty foods, and eat plain foods like rice and bananas.",
+            "joint pain": "Maintain a healthy weight, do low-impact exercises, and use a warm compress.",
+            "eye strain": "Follow the 20-20-20 rule (every 20 minutes, look at something 20 feet away for 20 seconds).",
+            "ear pain": "Use a warm compress, avoid inserting objects in the ear, and stay hydrated.",
+            "sinusitis": "Inhale steam, stay hydrated, and use a saline nasal spray.",
+            "gastritis": "Eat smaller meals, avoid spicy foods, and drink herbal teas.",
+            "indigestion": "Eat slowly, avoid carbonated drinks, and try ginger tea.",
+            "heartburn": "Avoid acidic foods, eat smaller meals, and avoid lying down after eating.",
+            "fatigue": "Get enough sleep, eat a balanced diet, and stay active.",
+            "muscle cramps": "Stay hydrated, stretch regularly, and eat foods rich in potassium.",
+            "anemia": "Eat iron-rich foods like spinach and lean meats, and take iron supplements if needed.",
+            "depression": "Seek support from friends, practice mindfulness, and engage in physical activity.",
+            "anxiety": "Practice deep breathing, avoid caffeine, and engage in relaxation techniques.",
+            "migraine": "Stay in a dark, quiet room, drink plenty of water, and use a cold compress.",
+            "dizziness": "Sit down, drink water, and avoid sudden movements.",
+            "nausea": "Try ginger tea, eat small meals, and avoid strong smells.",
+            "food poisoning": "Stay hydrated, eat bland foods, and get plenty of rest.",
+            "weight loss": "Maintain a balanced diet, exercise regularly, and stay hydrated.",
+            "weight gain": "Eat nutrient-rich foods, do strength training, and get enough rest.",
+            "hair loss": "Eat a protein-rich diet, avoid excessive heat styling, and massage the scalp.",
+            "dry skin": "Use moisturizer, stay hydrated, and avoid hot showers.",
+            "oily skin": "Wash your face twice a day, avoid greasy foods, and use oil-free skincare products.",
+            "eczema": "Use fragrance-free moisturizers, avoid hot showers, and wear soft fabrics.",
+            "sunburn": "Apply aloe vera, stay hydrated, and avoid direct sunlight.",
+            "burns": "Cool the area with running water, apply aloe vera, and keep it clean.",
+            "insect bites": "Apply a cold compress, use antihistamines, and avoid scratching.",
+            "bruises": "Apply a cold pack, elevate the area, and rest.",
+            "cuts": "Clean the wound, apply an antiseptic, and cover with a bandage.",
+            "sprains": "Rest, ice the area, compress with a bandage, and elevate.",
+            "dehydration": "Drink water, eat water-rich fruits, and avoid excessive caffeine.",
+            "hangover": "Drink plenty of water, eat light meals, and rest.",
+            "motion sickness": "Look at the horizon, avoid reading, and try ginger candies.",
+            "snoring": "Sleep on your side, avoid alcohol before bed, and maintain a healthy weight.",
+            "bad breath": "Brush twice a day, floss regularly, and drink more water.",
+            "gum disease": "Brush and floss regularly, avoid tobacco, and visit the dentist.",
+            "osteoporosis": "Eat calcium-rich foods, do weight-bearing exercises, and get vitamin D.",
+            "thyroid problems": "Maintain a balanced diet, get regular check-ups, and manage stress.",
+            "PMS": "Eat healthy, exercise, and use a heating pad for cramps.",
+            "UTI": "Drink cranberry juice, stay hydrated, and maintain hygiene.",
+            "kidney stones": "Drink plenty of water, reduce salt intake, and eat calcium-rich foods.",
+            "gallstones": "Eat a high-fiber diet, avoid fatty foods, and stay active.",
+            "liver problems": "Avoid alcohol, eat a balanced diet, and exercise regularly.",
+            "diabetes": "Monitor blood sugar, eat balanced meals, and stay physically active.",
+            "fiber": "Eat whole grains, fruits, and vegetables to improve digestion and heart health.",
+            "iron": "Consume spinach, lentils, and red meat to prevent anemia and boost energy.",
+    "calcium": "Drink milk, eat cheese, and consume leafy greens for strong bones and teeth.",
+    "vitamin C": "Eat citrus fruits, bell peppers, and strawberries to boost immunity and skin health.",
+    "omega-3": "Include fatty fish, walnuts, and flaxseeds for brain and heart health.",
+    "magnesium": "Eat bananas, nuts, and dark chocolate to support muscle function and relaxation.",
+    "zinc": "Consume pumpkin seeds, meat, and dairy to improve immunity and wound healing.",
+    "potassium": "Eat bananas, potatoes, and avocados to maintain healthy blood pressure.",
+    "healthy fats": "Use olive oil, eat avocados, and consume nuts for heart and brain health.",
+    "vitamin D": "Get sunlight exposure and eat salmon, eggs, and fortified dairy to strengthen bones.",
+    "folic acid": "Eat leafy greens, beans, and citrus fruits to support cell growth and pregnancy health.",
+    "vitamin A": "Consume carrots, sweet potatoes, and liver to improve vision and skin health.",
+    "B vitamins": "Include whole grains, meat, and dairy for energy production and brain function.",
+    "selenium": "Eat Brazil nuts, seafood, and eggs for thyroid function and immunity support.",
+    "probiotics": "Consume yogurt, kimchi, and sauerkraut for gut health and digestion.",
+    "prebiotics": "Eat garlic, onions, and bananas to feed healthy gut bacteria.",
+    "iodine": "Use iodized salt and eat seafood to maintain proper thyroid function.",
+    "antioxidants": "Consume berries, dark chocolate, and green tea to fight cell damage.",
+    "collagen": "Eat bone broth, chicken skin, and fish to support skin and joint health.",
+    "choline": "Include eggs, liver, and peanuts to support brain and liver function.",
+    "polyphenols": "Drink green tea, eat dark chocolate, and consume red grapes for anti-inflammatory benefits.",
+    "flavonoids": "Eat apples, onions, and citrus fruits for heart health and reduced inflammation.",
+    "vitamin E": "Consume almonds, sunflower seeds, and spinach to support skin and immune health.",
+    "phosphorus": "Eat dairy, fish, and nuts to support strong bones and teeth.",
+    "copper": "Include shellfish, nuts, and seeds to support red blood cell formation.",
+    "manganese": "Consume whole grains, nuts, and leafy greens to support metabolism.",
+    "chromium": "Eat broccoli, whole grains, and nuts to regulate blood sugar levels.",
+    "lycopene": "Eat tomatoes, watermelon, and pink grapefruit to support prostate and heart health.",
+    "lutein": "Consume kale, eggs, and corn to improve eye health.",
+    "resveratrol": "Eat grapes, blueberries, and peanuts for heart and anti-aging benefits.",
+    "coenzyme Q10": "Include fish, nuts, and meat to support energy production and heart health.",
+    "quercetin": "Eat onions, apples, and berries for anti-inflammatory effects.",
+    "beta-carotene": "Consume carrots, mangoes, and bell peppers to boost immunity and skin health.",
+    "sulforaphane": "Eat broccoli, Brussels sprouts, and cabbage for detoxification and cancer protection.",
+    "lignans": "Include flaxseeds, sesame seeds, and whole grains for hormone balance.",
+    "nitrates": "Eat beets, spinach, and lettuce to improve blood circulation and athletic performance.",
+    "isoflavones": "Consume soy products like tofu and edamame for hormonal balance.",
+    "glutamine": "Eat chicken, fish, and dairy to support muscle recovery and gut health.",
+    "arginine": "Include turkey, peanuts, and chickpeas to improve blood flow and heart health.",
+    "cysteine": "Eat eggs, garlic, and oats to boost antioxidant production.",
+    "tyrosine": "Consume dairy, turkey, and bananas for brain function and stress relief.",
+    "histidine": "Eat meat, fish, and dairy for tissue repair and immune support.",
+    "valine": "Include beans, cheese, and soy for muscle repair and energy.",
+    "leucine": "Consume eggs, fish, and chicken for muscle growth and recovery.",
+    "isoleucine": "Eat nuts, lentils, and chicken for immune function and energy.",
+    "tryptophan": "Include turkey, milk, and nuts to improve mood and sleep quality.",
+    "phenylalanine": "Consume meat, eggs, and dairy for brain function and alertness.",
+    "methionine": "Eat fish, nuts, and eggs to support detoxification and skin health.",
+    "hello": "Hi! Hope you’re having a great day!",
+    "how are you": "I'm doing well! How about you?",
+    "what is your name": "I'm Arjun, your AI assistant here to help!",
+    "where are you from": "I exist in the digital world, always ready to assist you!",
+    "what do you do": "I provide answers, help with tasks, and chat with you!",
+    "how old are you": "I don’t age, but I’m always learning new things!",
+    "what’s the time": "I recommend checking your device for the most accurate time!",
+    "what day is today": "You can check your calendar for today’s date!",
+    "what is your favorite color": "I don’t have a favorite, but I like all colors equally!",
+    "what is your favorite food": "I don’t eat, but I can suggest great food options!",
+    "do you like music": "Yes! I can recommend songs based on your mood!",
+    "what’s your hobby": "Helping people, answering questions, and learning new things!",
+    "do you like reading": "I love reading and can recommend books to you!",
+    "can you tell a joke": "Sure! Why don’t skeletons fight each other? Because they don’t have the guts!",
+    "what languages do you speak": "I understand multiple languages and can assist in many!",
+    "do you have emotions": "I don’t have feelings, but I can understand and respond to yours!",
+    "do you sleep": "No, I’m always here whenever you need help!",
+    "how can I improve my English": "Read books, practice speaking, and learn new words daily!",
+    "what’s the meaning of life": "The meaning of life is different for everyone—find what makes you happy!",
+    "how to be happy": "Surround yourself with positivity, practice gratitude, and do what you love!",
+    "how to reduce stress": "Try deep breathing, meditation, and taking breaks when needed!",
+    "how to stay healthy": "Eat nutritious food, exercise regularly, and get enough sleep!",
+    "how to lose weight": "Maintain a balanced diet, exercise daily, and stay consistent!",
+    "how to gain weight": "Eat calorie-dense foods, increase protein intake, and strength train!",
+    "how to improve memory": "Practice brain exercises, get good sleep, and eat brain-boosting foods!",
+    "how to focus better": "Eliminate distractions, take breaks, and practice mindfulness!",
+    "how to wake up early": "Sleep on time, set an alarm, and maintain a consistent routine!",
+    "how to make friends": "Be friendly, listen well, and show genuine interest in others!",
+    "how to boost confidence": "Practice self-love, set small goals, and celebrate achievements!",
+    "how to be successful": "Stay dedicated, work hard, and never stop learning!",
+    "how to learn faster": "Use active recall, break information into chunks, and practice regularly!",
+    "how to stay motivated": "Set goals, track progress, and remind yourself why you started!",
+    "how to deal with failure": "Learn from it, stay positive, and keep moving forward!",
+    "how to be a good leader": "Communicate well, be supportive, and inspire others!",
+    "how to control anger": "Take deep breaths, think before reacting, and stay calm!",
+    "how to improve communication skills": "Practice speaking, listen actively, and be clear in your words!",
+    "how to stop procrastinating": "Break tasks into small steps, set deadlines, and stay focused!",
+    "how to develop a habit": "Start small, be consistent, and track your progress!",
+    "how to save money": "Plan a budget, avoid unnecessary spending, and track expenses!",
+    "how to be positive": "Focus on the good, practice gratitude, and stay around positive people!",
+    "how to dress well": "Wear clothes that fit well, match colors, and suit the occasion!",
+    "how to be more productive": "Prioritize tasks, take breaks, and avoid distractions!",
+    "how to start a conversation": "Ask open-ended questions and show interest in the other person!",
+    "how to stay hydrated": "Drink at least 8 glasses of water daily and eat water-rich foods!",
+    "how to make good decisions": "Think logically, weigh options, and trust your instincts!",
+    "how to prepare for an interview": "Research the company, practice answers, and dress professionally!",
+    "how to improve writing skills": "Read more, practice daily, and learn grammar rules!",
+    "how to learn coding": "Start with basics, practice coding daily, and build small projects!",
+    "how to become a better listener": "Give full attention, avoid interrupting, and ask questions!",
+    "how to balance work and life": "Set boundaries, plan breaks, and make time for yourself!"
+        };
+
+        let userMessage = input.value.toLowerCase().trim();
+        let response = responses[userMessage] || "I'm here to help! Please describe your health concern.";
+
+        chatBody.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+        input.value = '';
+
+        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the latest message
+    }
+}
+
+
+    </script>
+
+</body>
+</html>
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+dashboard.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Wellness Dashboard</title>
+    <style>
+        /* Reset & Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #f5efef;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        
+        /* Navbar */
+        nav {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Container */
+        .container {
+            margin: 30px auto;
+            width: 350%;
+            max-width: 790px;
+            background-color: rgba(238, 237, 243, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        .containers {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #140f31;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2b1172;
+        }
+
+        #recommendation, #bmi-result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f7f6fc;
+            border: 1px solid #f5f4f7;
+            border-radius: 4px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+
+        .age-buttons button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .age-buttons button:hover {
+            background-color: #2b1172;
+        }
+        .diet-section {
+            display: none;
+            margin-top: 20px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        /* images animation*/
+
+        .diet-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .diet-header {
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #f06595);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .diet-section {
+            padding: 20px;
+        }
+
+        .diet-img {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .diet-content {
+            background: #ffe8cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #170949;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .animated-img {
+            animation: bounce 1s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar with Logo -->
+    <nav id="navbar">
+        <img src="logo.jpg" alt="Health Logo">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Health Dashboard</a>
+            <a href="menstrual.html">Menstrual Tracking</a>
+            <a href="mental.html">Mental Health</a>
+        </div>
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+        <h2>Health & Wellness Dashboard</h2>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Enter your age">
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" placeholder="Enter your height">
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight">
+
+        <label for="goal">Health Goal:</label>
+        <select id="goal">
+            <option value="weight_loss">Weight Loss</option>
+            <option value="fitness">Fitness</option>
+            <option value="mental_health">Mental Health</option>
+            <option value="nutrition">Better Nutrition</option>
+        </select>
+
+        <button onclick="generateRecommendation()">Get Recommendation</button>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="bmi-result"></div>
+        <div id="recommendation"></div>
+
+
+        <!-- Additional Fields -->
+    <h2>Calorie Calculator</h2>
+    <label for="gender">Gender:</label>
+    <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+
+    <label for="activity">Activity Level:</label>
+    <select id="activity">
+        <option value="1.2">Sedentary</option>
+        <option value="1.375">Lightly Active</option>
+        <option value="1.55">Moderately Active</option>
+        <option value="1.725">Very Active</option>
+        <option value="1.9">Super Active</option>
+    </select>
+
+    <button onclick="calculateCalories()">Calculate Calories</button>
+    <div id="calorie-result"></div>
+
+    <h2>Water Intake Tracker</h2>
+    <label for="water">Water Consumed (in Liters):</label>
+    <input type="number" id="water" placeholder="Enter water intake">
+    <button onclick="trackWater()">Track Water</button>
+    <div id="water-result"></div>
+
+    <h2>Mental Health Tip</h2>
+    <button onclick="showTip()">Get Tip</button>
+    <div id="mental-tip"></div>
+
+    <!-- Daily Wellness Challenge -->
+<div id="challenge">
+    <h2>🏆 Daily Wellness Challenge</h2>
+    <video id="webcam" width="600" height="500" autoplay></video>
+    <h3 id="current-exercise">Exercise: 20 Squats</h3>
+    <h3>Reps Completed: <span id="rep-count">0</span>/20</h3>
+    <button onclick="startChallenge()">Start Challenge</button>
+</div>
+
+<div class="containers">
+    <h1>Healthy Balanced Diet Based on Age</h1>
+    <p>Select your age group:</p>
+    <div class="age-buttons">
+        <button onclick="showDietPlan('children')">Children (2-12 years)</button>
+        <button onclick="showDietPlan('teenagers')">Teenagers (13-19 years)</button>
+        <button onclick="showDietPlan('adults')">Adults (20-50 years)</button>
+        <button onclick="showDietPlan('seniors')">Seniors (50+ years)</button>
+    </div>
+    
+    <div class="diet-section" id="children">
+        <h2>Children (2-12 years)</h2>
+        <img src="children.jpg" alt="Children Diet Animation" class="animated-img"><br>
+        
+        <h3>1. Dairy Products (Calcium & Growth)</h3>
+        <p>Dairy products are essential for strong bones and teeth. Some good options include milk, cheese, yogurt, and paneer. These provide calcium and protein necessary for proper growth.</p><br>
+    
+        <h3>2. Fruits and Vegetables (Vitamins & Immunity)</h3>
+        <p>Fruits and vegetables supply essential vitamins, minerals, and fiber. Healthy choices include apples, bananas, oranges, mangoes, papayas, carrots, spinach, broccoli, and sweet potatoes. Leafy greens like kale and fenugreek also help in strengthening immunity.</p><br>
+    
+        <h3>3. Whole Grains (Energy & Digestion)</h3>
+        <p>Whole grains are a great source of fiber and carbohydrates, providing long-lasting energy. Healthy options include oats, brown rice, whole wheat bread, multigrain chapati, quinoa, and millets such as ragi and jowar.</p><br>
+    
+        <h3>4. Protein (Muscle Growth & Brain Development)</h3>
+        <p>Proteins help in muscle development and brain function. Good sources include eggs, fish like salmon and tuna, lean chicken, tofu, paneer, soybeans, lentils (dal), chickpeas, and kidney beans.</p><br>
+    
+        <h3>5. Healthy Fats (Brain Function & Energy)</h3>
+        <p>Healthy fats improve brain function and keep skin healthy. Foods rich in good fats include ghee in moderation, olive oil, coconut oil, avocados, almonds, walnuts, and seeds like flaxseeds and chia seeds.</p><br>
+    
+        <h3>6. Hydration (Water & Fluids)</h3>
+        <p>Staying hydrated is essential for digestion and energy. Children should drink plenty of water, fresh fruit juices without added sugar, buttermilk, coconut water, and homemade soups.</p><br>
+    
+        <h3>7. Snacks (Healthy Options)</h3>
+        <p>Instead of junk food, children can enjoy healthy snacks such as homemade popcorn without too much butter, a mix of dry fruits and nuts, vegetable sandwiches made with whole wheat bread, boiled sweet potatoes, fruit smoothies, or peanut butter with banana slices.</p><br>
+    </div>
+    
+    
+
+    <div class="diet-section" id="teenagers">
+        <h2>Teenagers (13-19 years)</h2>
+        <img src="teenagers.jpg" alt="Teenagers Diet Animation" class="animated-img"><br>
+        
+        <h3>1. Protein (Muscle Growth & Strength)</h3>
+        <p>Teenagers need high-protein foods for muscle growth and strength. Good sources include eggs, chicken, fish like salmon and tuna, lean meats, tofu, paneer, lentils (dal), chickpeas, kidney beans, and nuts.</p><br>
+    
+        <h3>2. Iron-Rich Foods (Energy & Red Blood Cells)</h3>
+        <p>Iron is essential to prevent anemia and boost energy levels. Foods rich in iron include spinach, kale, beetroot, beans, lentils, red meat, poultry, and fortified cereals. Vitamin C from citrus fruits helps with better iron absorption.</p><br>
+    
+        <h3>3. Whole Grains (Energy & Digestion)</h3>
+        <p>Whole grains provide fiber and keep digestion healthy. Best choices include brown rice, whole wheat bread, oats, quinoa, multigrain chapati, and millets like ragi and jowar.</p><br>
+    
+        <h3>4. Healthy Fats (Brain Development & Focus)</h3>
+        <p>Healthy fats help with brain development and concentration. Teenagers should consume nuts (almonds, walnuts, cashews), seeds (chia, flaxseeds, pumpkin seeds), avocados, ghee, olive oil, and fatty fish.</p><br>
+    
+        <h3>5. Dairy & Calcium (Bone Strength & Growth)</h3>
+        <p>Calcium is important for bone development. Good sources include milk, cheese, yogurt, paneer, and plant-based alternatives like soy milk and almond milk.</p><br>
+    
+        <h3>6. Hydration (Water & Fluids)</h3>
+        <p>Drinking enough fluids is necessary for proper digestion and energy levels. Water, coconut water, buttermilk, fresh fruit juices (without added sugar), and homemade soups are excellent choices.</p><br>
+    
+        <h3>7. Healthy Snacks (Smart Eating)</h3>
+        <p>Avoid junk food and opt for healthy snacks like fruit smoothies, homemade popcorn (without extra butter), boiled eggs, peanut butter with whole wheat toast, vegetable sandwiches, roasted chickpeas, and yogurt with fruits.</p><br>
+    </div>
+    
+    <div class="diet-section" id="adults">
+        <h2>Adults (20-50 years)</h2>
+        <img src="adults.jpg" alt="Adults Diet Animation" class="animated-img"><br>
+    
+        <h3>1. Balanced Nutrition (Energy & Health)</h3>
+        <p>Adults need a balanced mix of carbohydrates, proteins, healthy fats, vitamins, and minerals to maintain energy levels and overall health. Include a variety of whole grains, lean proteins, and fresh vegetables in daily meals.</p><br>
+    
+        <h3>2. Lean Proteins (Muscle Maintenance & Metabolism)</h3>
+        <p>Proteins help in muscle maintenance and metabolism. Best sources include eggs, lean meats, fish, legumes, tofu, paneer, and nuts like almonds and walnuts.</p><br>
+    
+        <h3>3. Whole Grains (Sustained Energy & Digestion)</h3>
+        <p>Whole grains are rich in fiber and provide long-lasting energy. Include brown rice, quinoa, whole wheat chapatis, multigrain bread, and millets.</p><br>
+    
+        <h3>4. Fruits & Vegetables (Vitamins & Antioxidants)</h3>
+        <p>Eating a variety of colorful fruits and vegetables ensures the body gets essential vitamins and antioxidants. Opt for leafy greens, carrots, tomatoes, bell peppers, citrus fruits, and berries.</p><br>
+    
+        <h3>5. Healthy Fats (Heart & Brain Health)</h3>
+        <p>Healthy fats from olive oil, nuts, avocados, seeds (flaxseeds, chia seeds), and fatty fish like salmon help maintain heart and brain function.</p><br>
+    
+        <h3>6. Hydration (Water & Detox)</h3>
+        <p>Drinking at least 8 glasses of water daily is essential. Herbal teas, fresh coconut water, and homemade smoothies can also be included.</p><br>
+    
+        <h3>7. Lifestyle Tips (Exercise & Moderation)</h3>
+        <p>Regular physical activity, portion control, and reducing sugar, salt, and processed foods help maintain long-term health.</p><br>
+    </div>
+    
+    <div class="diet-section" id="seniors">
+        <h2>Seniors (50+ years)</h2>
+        <img src="seniors.jpg" alt="Seniors Diet Animation" class="animated-img"><br>
+    
+        <h3>1. Bone Health (Calcium & Vitamin D)</h3>
+        <p>To maintain strong bones, include dairy products, fortified plant-based milk, almonds, and sesame seeds. Sun exposure is also important for Vitamin D.</p><br>
+    
+        <h3>2. Easy-to-Digest Foods (Gut Health & Nutrition)</h3>
+        <p>As digestion slows with age, soft and nutrient-rich foods such as cooked vegetables, soups, dal, and whole grains like oats and soft rice are recommended.</p><br>
+    
+        <h3>3. Protein Intake (Muscle Strength & Repair)</h3>
+        <p>Protein-rich foods like eggs, lentils, fish, cottage cheese, and lean meats are crucial for maintaining muscle strength.</p><br>
+    
+        <h3>4. Heart-Healthy Foods (Cholesterol & Blood Pressure)</h3>
+        <p>Low-fat dairy, nuts, seeds, whole grains, and healthy fats from olive oil and flaxseeds support heart health.</p><br>
+    
+        <h3>5. Hydration (Preventing Dehydration)</h3>
+        <p>Seniors should drink enough water, herbal teas, and fresh fruit juices without added sugar to stay hydrated and prevent kidney issues.</p><br>
+    
+        <h3>6. Brain Health (Memory & Cognition)</h3>
+        <p>Foods rich in Omega-3 fatty acids like walnuts, fish, and chia seeds help improve memory and brain function.</p><br>
+    
+        <h3>7. Lifestyle Tips (Exercise & Regular Checkups)</h3>
+        <p>Light exercise, daily walks, and regular health checkups ensure overall well-being.</p><br>
+    </div>
+    
+</div>
+    </div>
+    <!-- Include TensorFlow.js and PoseNet -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
+    <script>
+        function generateRecommendation() {
+            const age = document.getElementById('age').value;
+            const goal = document.getElementById('goal').value;
+            const recommendation = document.getElementById('recommendation');
+
+            let advice = '';
+
+            if (!age) {
+                recommendation.innerHTML = 'Please enter your age.';
+                return;
+            }
+
+            switch (goal) {
+                case 'weight_loss':
+                    advice = 'To lose weight, do cardio exercises like running or cycling at least four times a week.Eat fewer calories than you burn, but make sure to have nutritious meals.Avoid processed foods and sugary drinks, as they add extra calories.Stay consistent and patient, as weight loss takes time.';
+                    break;
+                case 'fitness':
+                    advice = 'For overall fitness, combine strength training and cardio exercises.Strength training helps build muscles, while cardio improves heart health.Get at least 7 hours of sleep every night to allow your body to recover.Drink plenty of water and stretch before and after workouts.';
+                    break;
+                case 'mental_health':
+                    advice = 'Take time each day to relax and clear your mind with deep breathing.Practice mindfulness by focusing on the present and letting go of stress.A good sleep schedule is important for your mental well-being.Talk to someone if you feel overwhelmed, and don’t hesitate to ask for help.';
+                    break;
+                case 'nutrition':
+                    advice = 'Eat more fruits, vegetables, and whole grains for a balanced diet.Avoid junk food and sugary snacks, as they don’t provide essential nutrients.Drink plenty of water to stay hydrated and support digestion.Plan your meals ahead to make healthier food choices.';
+                    break;
+            }
+
+            recommendation.innerHTML = `<strong>Personalized Advice:</strong> ${advice}`;
+        }
+
+        function calculateBMI() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const bmiResult = document.getElementById('bmi-result');
+
+            if (!height || !weight) {
+                bmiResult.innerHTML = 'Please enter both height and weight.';
+                return;
+            }
+
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters ** 2)).toFixed(2);
+
+            let category = '';
+            if (bmi < 18.5) {
+                category = 'Underweight';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                category = 'Normal weight';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                category = 'Overweight';
+            } else {
+                category = 'Obese';
+            }
+
+            bmiResult.innerHTML = `<strong>BMI:</strong> ${bmi} (${category})`;
+        }
+
+        function calculateCalories() {
+        const age = document.getElementById('age').value;
+        const height = document.getElementById('height').value;
+        const weight = document.getElementById('weight').value;
+        const gender = document.getElementById('gender').value;
+        const activity = parseFloat(document.getElementById('activity').value);
+        const result = document.getElementById('calorie-result');
+
+        if (!age || !height || !weight) {
+            result.innerHTML = 'Please fill in all fields.';
+            return;
+        }
+
+        let bmr = gender === 'male' 
+            ? 10 * weight + 6.25 * height - 5 * age + 5 
+            : 10 * weight + 6.25 * height - 5 * age - 161;
+
+        const calories = Math.round(bmr * activity);
+        result.innerHTML = `<strong>Daily Calorie Needs:</strong> ${calories} kcal`;
+    }
+
+    function trackWater() {
+        const water = document.getElementById('water').value;
+        const result = document.getElementById('water-result');
+        result.innerHTML = water >= 2 
+            ? 'Well done! You stayed hydrated today' 
+            : 'Don’t forget to hydrate! Drink a bit more water today';
+    }
+
+    function showTip() {
+        const tips = [
+            'Start your day by appreciating something good about yourself.If you meet someone, give them a kind and genuine compliment.Simple words can brighten someone’s mood and boost confidence.Practicing kindness makes you feel happier and more positive.Make it a habit to spread positivity wherever you go.',
+            'Take a deep breath in through your nose and slowly exhale.Focus on your breathing to calm your mind and reduce stress.Deep breathing improves oxygen flow and relaxes your body.Practice this for a few minutes whenever you feel overwhelmed.It’s a simple way to refresh your mind and improve focus.',
+            'Every day, take a moment to list three things you appreciate.They can be big or small, like a good meal or a kind gesture.Practicing gratitude helps you focus on the positives in life.Over time, it can improve your happiness and reduce stress.Make it a habit to end your day on a grateful note.',
+            'Step outside to get some fresh air and natural sunlight.Being in nature helps reduce stress and improves your mood.A short walk or sitting in a park can refresh your mind.Sunlight boosts vitamin D levels, which is good for your health.Try to make outdoor time a daily habit for overall well-being.',
+            'Go to bed and wake up at the same time every day.A regular sleep pattern improves your energy and focus.Avoid screens before bedtime to help you fall asleep faster.Create a relaxing bedtime routine, like reading or meditation.Quality sleep is essential for a healthy mind and body.',
+            'Walking is a simple way to stay active and improve your health.Even a 10-minute walk can boost your mood and energy levels.Try walking after meals to aid digestion and reduce stress.If possible, take the stairs or walk instead of using transport.Regular walking keeps your body moving and mind refreshed.',
+            'Sit quietly and focus on your breathing, thoughts, or surroundings.Let go of stress and bring your attention to the present moment.Mindfulness helps you stay calm, focused, and less overwhelmed.You can practice it while eating, walking, or even listening to music.Just five minutes daily can make a big difference in your mindset.',
+            'Staring at screens for too long can strain your eyes.Every hour, look away from your screen for a few minutes.Blink often and focus on something far away to relax your eyes.Use this break to stretch, walk, or drink some water.Regular breaks improve focus, reduce fatigue, and prevent headaches.',
+            'Stretching helps loosen tight muscles and improves flexibility.It increases blood flow, making you feel more active and refreshed.Try simple stretches for your neck, shoulders, and legs.Morning stretching can wake up your body, while evening stretches help relax.Just 10 minutes a day can reduce stiffness and boost your energy.',
+            'Start your day by writing down a few simple goals.Prioritize tasks to avoid feeling overwhelmed or distracted.Breaking big tasks into smaller steps makes them easier to complete.Achieving small goals each day gives a sense of accomplishment.Stay consistent, and you’ll develop better time management skills.'
+
+        ];
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        document.getElementById('mental-tip').innerHTML = `💡 ${randomTip}`;
+    }
+
+    let net, repCount = 0, currentExercise = 0;
+const exercises = [
+    { name: "20 Squats", targetReps: 20, message: "Great Job! Keep Going!", image: "./Health/squads.jpg" },
+    { name: "15 Jumping Jacks", targetReps: 15, message: "You're Crushing It!", image: "./Health/jumping_jacks.jpg" },
+    { name: "10 Push-Ups", targetReps: 10, message: "Finish Strong!", image: "./Health/push_up.jpg" }
+];
+
+async function startChallenge() {
+    const video = document.getElementById('webcam');
+    const repDisplay = document.getElementById('rep-count');
+    const exerciseDisplay = document.getElementById('current-exercise');
+    const motivationText = document.getElementById('motivation');
+    const boostImage = document.getElementById('boost-image');
+
+    // Load PoseNet
+    net = await posenet.load();
+
+    // Access Webcam
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        video.srcObject = stream;
+    });
+
+    // Pose Detection Loop
+    video.addEventListener('loadeddata', () => {
+        detectPose(video);
+    });
+
+    async function detectPose(video) {
+        const pose = await net.estimateSinglePose(video, { flipHorizontal: false });
+
+        // Example: Count squats using knee position
+        const leftKnee = pose.keypoints.find(p => p.part === 'leftKnee');
+        const rightKnee = pose.keypoints.find(p => p.part === 'rightKnee');
+
+        if (leftKnee && rightKnee && leftKnee.score > 0.7 && rightKnee.score > 0.7) {
+            if (leftKnee.position.y > 400 && rightKnee.position.y > 400) {
+                if (repCount < exercises[currentExercise].targetReps) {
+                    repCount++;
+                    repDisplay.textContent = repCount;
+                }
+
+                // Move to next exercise after reaching target
+                if (repCount >= exercises[currentExercise].targetReps) {
+                    motivationText.textContent = exercises[currentExercise].message;
+                    boostImage.src = exercises[currentExercise].image;
+                    boostImage.style.display = 'block';
+
+                    currentExercise++;
+                    if (currentExercise < exercises.length) {
+                        setTimeout(() => {
+                            repCount = 0;
+                            exerciseDisplay.textContent = `Exercise: ${exercises[currentExercise].name}`;
+                            repDisplay.textContent = repCount;
+                            motivationText.textContent = '';
+                            boostImage.style.display = 'none';
+                        }, 2000);
+                    } else {
+                        // Final Congratulations
+                        exerciseDisplay.textContent = "🎉 Challenge Completed! You're unstoppable!";
+                        motivationText.textContent = "🏆 Well Done, Champion!";
+                        boostImage.src = "./Health/congrats.jpg"; // Replace with a real image
+                    }
+                }
+            }
+        }
+        requestAnimationFrame(() => detectPose(video));
+    }
+}
+
+function showDietPlan() {
+    const age = document.getElementById('age').value;
+
+    // Hide all diet sections initially
+    document.querySelectorAll('.diet-section').forEach(section => section.style.display = 'none');
+
+    if (!age || age < 1) {
+        alert("Please enter a valid age.");
+        return;
+    }
+
+    if (age >= 2 && age <= 12) {
+        document.getElementById('children').style.display = 'block';
+    } else if (age >= 13 && age <= 19) {
+        document.getElementById('teenagers').style.display = 'block';
+    } else if (age >= 20 && age <= 50) {
+        document.getElementById('adults').style.display = 'block';
+    } else if (age > 50) {
+        document.getElementById('seniors').style.display = 'block';
+    }
+}
+function showDietPlan(sectionId) {
+            // Hide all diet sections
+            document.querySelectorAll('.diet-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+    </script>
+
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+mental.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Navbar */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #f5efef;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        
+        /* Navbar */
+        nav {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Container */
+        .container {
+            margin: 30px auto;
+            width: 350%;
+            max-width: 790px;
+            background-color: rgba(238, 237, 243, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        .containers {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #140f31;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2b1172;
+        }
+
+        #result, #chart-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #faf7f9;
+            border: 1px solid #13123b;
+            border-radius: 4px;
+        }
+
+        /* Drawing Board */
+        canvas {
+            border: 2px solid white;
+            background: white;
+            cursor: crosshair;
+            display: block;
+            margin: 10px auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px #faf7f9;
+        }
+
+
+        .keyboard {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        padding: 15px;
+        background-color: rgba(238, 237, 243, 0.9);
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        width: 100%;
+    }
+    .key {
+        width: 40px;
+        height: 150px;
+        background: white;
+        border: 2px solid black;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+    }
+    .key.black {
+        background: black;
+        height: 100px;
+        width: 30px;
+        margin-left: -15px;
+        margin-right: -15px;
+        z-index: 1;
+        position: relative;
+    }
+    .key.active {
+        transform: scale(0.9);
+        box-shadow: none;
+    }
+
+    .keyboard-container h2 {
+    color: white;
+}
+
+select, button {
+            font-size: 1rem;
+            padding: 10px;
+            margin: 10px;
+        }
+        .instructions {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 15px;
+    border-radius: 10px;
+    display: none; /* Hide images by default */
+    
+    /* Centering the image */
+    display: block;  /* Ensures it behaves like a block element */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+    </style>
+</head>
+<body>
+
+
+    <!-- Navbar with Logo -->
+    <nav id="navbar">
+        <img src="logo.jpg" alt="Health Logo">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Health Dashboard</a>
+            <a href="menstrual.html">Menstrual Tracking</a>
+            <a href="mental.html">Mental Health</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Mental Health Check-In</h2>
+
+        <label for="mood">How are you feeling today?</label>
+        <input type="text" id="mood" placeholder="Happy, Sad, Stressed, etc.">
+
+        <label for="notes">Any specific thoughts or concerns?</label>
+        <textarea id="notes" rows="4" placeholder="Write here..."></textarea>
+
+        <h3>Mental Health Questions</h3>
+        <div id="questions"></div>
+        
+        <button onclick="calculateMentalHealth()">Submit</button>
+        <div id="result"></div>
+
+        <div id="chart-container">
+            <canvas id="mentalHealthChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Drawing Board Section -->
+    <div class="container">
+        <h3>Drawing Board </h3>
+        <label for="colorPicker">Select Color:</label>
+        <input type="color" id="colorPicker">
+        <canvas id="drawingBoard" width="500" height="300"></canvas>
+        <br>
+        <button onclick="clearCanvas()">Clear</button>
+        <button onclick="saveCanvas()">Save</button>
+    </div>
+
+    <div class="container">
+        <h1>Origami & Crafting Guide</h1>
+        <label for="craft-type">Choose an Origami Design:</label>
+        <select id="craft-type">
+            <option value="crane">Origami Crane</option>
+            <option value="flower">Paper Flower</option>
+            <option value="boat">Paper Boat</option>
+            <option value="heart">Origami Heart</option>
+            <option value="frog">Jumping Frog</option>
+        </select>
+
+        <button onclick="showInstructions()">Show Steps</button>
+
+        <div class="instructions" id="instructions"></div>
+        <img id="craft-image" src="" alt="Origami Image">
+    </div>
+
+    <div class="keyboard-container">
+        <h2>Interactive Keyboard with Sound</h2>
+        <div class="keyboard" id="keyboard"></div>
+    </div>
+
+    </div>
+
+    
+
+    <script>
+        const questions = [
+            "How often do you feel overwhelmed?",
+            "Do you have trouble sleeping?",
+            "Do you feel fatigued during the day?",
+            "Do you experience frequent mood swings?",
+            "Do you feel anxious or worried often?",
+            "Do you find it hard to concentrate?",
+            "Do you feel socially withdrawn?",
+            "Do you experience panic attacks?",
+            "Do you find it difficult to enjoy things?",
+            "Do you feel lonely often?",
+            "How often do you feel stressed?",
+            "Do you feel mentally exhausted?",
+            "Do you struggle with self-confidence?",
+            "Do you feel like you lack purpose?",
+            "How often do you feel sad?",
+            "Do you experience headaches due to stress?",
+            "Do you feel irritable frequently?",
+            "Do you have negative thoughts about yourself?",
+            "Do you experience sudden emotional outbursts?",
+            "Do you find yourself overthinking situations?",
+            "Do you feel disconnected from reality?",
+            "Do you feel pressure to meet expectations?",
+            "Do you have difficulty making decisions?",
+            "Do you feel like your thoughts are overwhelming?",
+            "Do you feel unmotivated frequently?"
+        ];
+
+        function loadQuestions() {
+            const container = document.getElementById("questions");
+            questions.forEach((question, index) => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <label>${index + 1}. ${question}</label>
+                    <select class="question-response">
+                        <option value="0">Never</option>
+                        <option value="1">Rarely</option>
+                        <option value="2">Sometimes</option>
+                        <option value="3">Often</option>
+                        <option value="4">Always</option>
+                    </select>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function calculateMentalHealth() {
+            const responses = document.querySelectorAll(".question-response");
+            let totalScore = 0;
+            responses.forEach(response => {
+                totalScore += parseInt(response.value);
+            });
+
+            let category;
+            if (totalScore < 25) category = "Good Mental Health";
+            else if (totalScore < 50) category = "Moderate Stress";
+            else category = "High Stress - Consider Seeking Help";
+
+            document.getElementById("result").innerHTML = `<strong>Mental Health Status:</strong> ${category}`;
+            drawChart(totalScore);
+        }
+
+        function drawChart(score) {
+            const ctx = document.getElementById('mentalHealthChart').getContext('2d');
+            if (window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Good Mental Health', 'Moderate Stress', 'High Stress'],
+                    datasets: [{
+                        data: [25, 25, 50],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+        loadQuestions();
+
+        // Drawing Board with Colors
+        const canvas = document.getElementById("drawingBoard");
+        const ctx = canvas.getContext("2d");
+        let painting = false;
+        let colorPicker = document.getElementById("colorPicker");
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+            ctx.lineWidth = 5;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = colorPicker.value;
+
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        }
+
+        canvas.addEventListener("mousedown", startPosition);
+        canvas.addEventListener("mouseup", endPosition);
+        canvas.addEventListener("mousemove", draw);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveCanvas() {
+            let link = document.createElement('a');
+            link.download = 'drawing.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+
+
+        function showInstructions() {
+            let type = document.getElementById("craft-type").value;
+            let instructions = document.getElementById("instructions");
+            let image = document.getElementById("craft-image");
+
+            if (type === "crane") {
+                instructions.innerHTML = "1. Start with a square paper. <br> 2. Fold into a triangle and crease. <br> 3. Keep folding and shaping the wings.";
+                image.src = "images/crane.jpg";
+            } else if (type === "flower") {
+                instructions.innerHTML = "1. Cut a square paper. <br> 2. Fold into petals shape. <br> 3. Secure with glue or tape.";
+                image.src = "images/flower.jpg"; // Flower Image
+            } else if (type === "boat") {
+                instructions.innerHTML = "1. Start with a rectangle. <br> 2. Fold it into a triangle, then shape it into a boat.";
+                image.src = "images/boat.jpg"; // Boat Image
+            } else if (type === "heart") {
+                instructions.innerHTML = "1. Start with a square. <br> 2. Fold diagonally and shape into a heart.";
+                image.src = "images/heart.jpg"; // Heart Image
+            } else if (type === "frog") {
+                instructions.innerHTML = "1. Fold a rectangular paper. <br> 2. Make a base shape and add frog legs.";
+                image.src = "images/frog.jpg";// Frog Image
+            }
+
+            image.style.display = "block"; // Show the selected image
+        }
+
+
+
+
+
+        const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+const keyboardDiv = document.getElementById("keyboard");
+let currentSound = null;
+
+const soundMap = {
+    "A": "s1.wav", "B": "s2 (1).wav", "C": "s2 (2).wav", "D": "s2 (3).wav", "E": "s2 (4).wav",
+    "F": "s1.wav", "G": "s2 (1).wav", "H": "s2 (2).wav", "I": "s2 (3).wav", "J": "s2 (4).wav",
+    "K": "s1.wav", "L": "s2 (1).wav", "M": "s2 (2).wav", "N": "s2 (3).wav", "O": "s2 (4).wav",
+    "P": "s1.wav", "Q": "s2 (1).wav", "R": "s2 (2).wav", "S": "s2 (3).wav", "T": "s2 (4).wav",
+    "U": "s1.wav", "V": "s2 (1).wav", "W": "s2 (2).wav", "X": "s2 (3).wav", "Y": "s2 (4).wav",
+    "Z": "s1.wav", "0": "s2 (1).wav", "1": "s2 (2).wav", "2": "s2 (3).wav", "3": "s2 (4).wav",
+    "4": "s1.wav", "5": "s2 (1).wav", "6": "s2 (2).wav", "7": "s2 (3).wav", "8": "s2 (4).wav",
+    "9": "s1.wav"
+};
+
+// Create keyboard UI with alternating black and white keys
+keys.forEach((key, index) => {
+    const keyElement = document.createElement("div");
+    keyElement.classList.add("key");
+
+    // Apply alternating colors
+    if (index % 2 === 0) {
+        keyElement.classList.add("black");
+    }
+
+    keyElement.setAttribute("data-key", key);
+    keyboardDiv.appendChild(keyElement);
+});
+
+// Function to play sound
+function playSound(key) {
+    if (currentSound) {
+        currentSound.pause();
+        currentSound.currentTime = 0;
+    }
+
+    if (soundMap[key]) {
+        currentSound = new Audio(soundMap[key]);
+        currentSound.play();
+    }
+}
+
+// Function to stop sound
+function stopSound() {
+    if (currentSound) {
+        currentSound.pause();
+        currentSound.currentTime = 0;
+        currentSound = null;
+    }
+}
+
+// Function to highlight key when pressed
+function activateKey(key) {
+    const keyElement = document.querySelector(`.key[data-key='${key}']`);
+    if (keyElement) {
+        keyElement.classList.add("active");
+    }
+}
+
+// Function to remove key highlight when released
+function deactivateKey(key) {
+    const keyElement = document.querySelector(`.key[data-key='${key}']`);
+    if (keyElement) {
+        keyElement.classList.remove("active");
+    }
+}
+
+// Keyboard key press event
+document.addEventListener("keydown", (event) => {
+    const key = event.key.toUpperCase();
+    if (keys.includes(key)) {
+        playSound(key);
+        activateKey(key);
+    }
+});
+
+document.addEventListener("keyup", (event) => {
+    const key = event.key.toUpperCase();
+    if (keys.includes(key)) {
+        stopSound();
+        deactivateKey(key);
+    }
+});
+
+// Mouse click event
+document.querySelectorAll(".key").forEach(key => {
+    key.addEventListener("mousedown", () => {
+        const keyText = key.getAttribute("data-key");
+        playSound(keyText);
+        activateKey(keyText);
+    });
+    key.addEventListener("mouseup", () => {
+        stopSound();
+        deactivateKey(key.getAttribute("data-key"));
+    });
+});
+
+    </script>
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+menstral.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstrual Cycle Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #0c0c0c;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Navbar */
+        nav {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .container {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(238, 237, 243, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2b1172;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #faf9f9;
+            border: 1px solid #220a41;
+            border-radius: 4px;
+        }
+        /* breeding */
+
+        .timer {
+            font-size: 3rem;
+            margin: 20px 0;
+            color: #333;
+        }
+        .action {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007BFF;
+        }
+        .gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.breathing-gif {
+    width: 300px; /* Adjust size as needed */
+    height: 300px;
+}
+
+
+                /* Chatbot */
+                .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #4a90e2, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: floatIcon 3s infinite ease-in-out;
+            transition: transform 0.3s ease;
+        }
+
+
+        .chatbot-icon img {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+        }
+
+        .chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes floatIcon {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+
+        .chat-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #3829be;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chat-footer button {
+            background: #3829be;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+                /* Change color of "You" and "Bot" text */
+                strong {
+            color: #2533ac; /* Change this to any color you prefer */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <img src="logo.jpg" alt="Health Logo">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Health Dashboard</a>
+            <a href="menstrual.html">Menstrual Tracking</a>
+            <a href="mental.html">Mental Health</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Track Your Cycle & Pregnancy</h2>
+        
+        <label for="last-period">Last Period Start Date:</label>
+        <input type="date" id="last-period">
+        
+        <label for="cycle-length">Average Cycle Length (days):</label>
+        <input type="number" id="cycle-length" placeholder="Usually between 21-35 days">
+        
+        <button onclick="trackCycle()">Predict Next Period</button>
+        
+        <h3>Results:</h3>
+        <div id="result"></div>
+        <div id="pregnancy-status"></div>
+
+         <!-- breeding-->
+
+         <div class="container">
+            <h1>4-7-8 Breathing Exercise</h1>
+            <p class="action">Get ready...</p>
+            <div class="timer">4</div>
+            <div class="gif-container">
+                <img src="C:\Users\anith\Desktop\Health\gif.gif" alt="Breathing Exercise GIF" class="breathing-gif">
+            </div>
+            <button onclick="startBreathing()">Start</button>
+        </div>
+        
+
+
+        
+    </div>
+
+    <!-- Chatbot -->
+    <img src="ai.jpg" alt="Chatbot" class="chatbot-icon" onclick="toggleChat()">
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">Chat with Us</div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Ask me anything...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+      function trackCycle() {
+    let lastPeriod = document.getElementById("last-period").value;
+    let cycleLength = parseInt(document.getElementById("cycle-length").value);
+
+    if (!lastPeriod || isNaN(cycleLength) || cycleLength < 21 || cycleLength > 35) {
+        alert("Please enter valid data!");
+        return;
+    }
+
+    let lastPeriodDate = new Date(lastPeriod);
+    let nextPeriodDate = new Date(lastPeriodDate);
+    nextPeriodDate.setDate(lastPeriodDate.getDate() + cycleLength);
+
+    let today = new Date();
+
+    document.getElementById("result").innerHTML = `<b>Next Period Date:</b> ${nextPeriodDate.toDateString()}`;
+
+    // Pregnancy Detection (If missed period)
+    if (today > nextPeriodDate) {
+        let dueDate = new Date(lastPeriodDate);
+        dueDate.setDate(lastPeriodDate.getDate() + 280); // 40 weeks from last period
+
+        let weeksPregnant = Math.floor((today - lastPeriodDate) / (7 * 24 * 60 * 60 * 1000));
+
+        document.getElementById("pregnancy-status").innerHTML = `
+            <b>Missed Period!</b> You might be pregnant. <br>
+            <b>Estimated Due Date:</b> ${dueDate.toDateString()} <br>
+            <b>Weeks Pregnant:</b> ${weeksPregnant} weeks
+        `;
+    } 
+
+    // Save data in local storage
+    localStorage.setItem("lastPeriod", lastPeriod);
+    localStorage.setItem("cycleLength", cycleLength);
+}
+
+// Load saved data
+window.onload = function() {
+    if (localStorage.getItem("lastPeriod")) {
+        document.getElementById("last-period").value = localStorage.getItem("lastPeriod");
+    }
+    if (localStorage.getItem("cycleLength")) {
+        document.getElementById("cycle-length").value = localStorage.getItem("cycleLength");
+    }
+};
+
+
+
+        const actionText = document.querySelector('.action');
+        const timerText = document.querySelector('.timer');
+        let phases = [
+            { text: "Inhale", time: 4 },
+            { text: "Hold", time: 7 },
+            { text: "Exhale", time: 8 }
+        ];
+        let phaseIndex = 0;
+
+        function startBreathing() {
+            phaseIndex = 0;
+            nextPhase();
+        }
+
+        function nextPhase() {
+            if (phaseIndex >= phases.length) {
+                actionText.textContent = "Relax & Repeat";
+                timerText.textContent = "";
+                return;
+            }
+            let phase = phases[phaseIndex];
+            actionText.textContent = phase.text;
+            let countdown = phase.time;
+            timerText.textContent = countdown;
+            
+            let interval = setInterval(() => {
+                countdown--;
+                timerText.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    phaseIndex++;
+                    nextPhase();
+                }
+            }, 1000);
+        }
+
+
+
+
+
+
+
+
+
+        function toggleChat() {
+    const chatContainer = document.getElementById('chatContainer');
+    chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
+}
+
+function sendMessage() {
+    const input = document.getElementById('userInput');
+    const chatBody = document.getElementById('chatBody');
+    
+    if (input.value.trim() !== '') {
+        chatBody.innerHTML += `<div><strong>You:</strong> ${input.value}</div>`;
+
+        const responses = {
+            "headache": "Try drinking water, resting in a dark room, or applying a cold compress to your forehead.",
+            "cold": "Stay hydrated, get plenty of rest, and try drinking warm tea with honey and lemon.",
+            "protein": "Include lean meats, eggs, beans, and nuts for muscle growth and repair.",
+            "fiber": "Eat whole grains, fruits, and vegetables to improve digestion and heart health.",
+            "iron": "Consume spinach, lentils, and red meat to prevent anemia and boost energy.",            
+            "insomnia": "Avoid caffeine before bed, maintain a consistent sleep schedule, and try relaxation techniques.",
+            "sore throat": "Drink warm liquids, gargle with salt water, and use throat lozenges.",
+            "acne": "Keep your skin clean, avoid touching your face, and use gentle skincare products.",
+            "toothache": "Rinse with warm salt water, apply a cold compress, and avoid sugary foods.",
+            "back pain": "Maintain good posture, stretch regularly, and apply a heating pad.",
+            "allergies": "Avoid allergens, keep your home clean, and take antihistamines if needed.",
+            "high blood pressure": "Reduce salt intake, exercise regularly, and manage stress.",
+            "low blood pressure": "Drink more water, eat small meals frequently, and avoid sudden position changes.",
+            "constipation": "Increase fiber intake, drink more water, and stay active.",
+            "diarrhea": "Stay hydrated, avoid dairy and fatty foods, and eat plain foods like rice and bananas.",
+            "joint pain": "Maintain a healthy weight, do low-impact exercises, and use a warm compress.",
+            "eye strain": "Follow the 20-20-20 rule (every 20 minutes, look at something 20 feet away for 20 seconds).",
+            "ear pain": "Use a warm compress, avoid inserting objects in the ear, and stay hydrated.",
+            "sinusitis": "Inhale steam, stay hydrated, and use a saline nasal spray.",
+            "gastritis": "Eat smaller meals, avoid spicy foods, and drink herbal teas.",
+            "indigestion": "Eat slowly, avoid carbonated drinks, and try ginger tea.",
+            "heartburn": "Avoid acidic foods, eat smaller meals, and avoid lying down after eating.",
+            "fatigue": "Get enough sleep, eat a balanced diet, and stay active.",
+            "muscle cramps": "Stay hydrated, stretch regularly, and eat foods rich in potassium.",
+            "anemia": "Eat iron-rich foods like spinach and lean meats, and take iron supplements if needed.",
+            "depression": "Seek support from friends, practice mindfulness, and engage in physical activity.",
+            "anxiety": "Practice deep breathing, avoid caffeine, and engage in relaxation techniques.",
+            "migraine": "Stay in a dark, quiet room, drink plenty of water, and use a cold compress.",
+            "dizziness": "Sit down, drink water, and avoid sudden movements.",
+            "nausea": "Try ginger tea, eat small meals, and avoid strong smells.",
+            "food poisoning": "Stay hydrated, eat bland foods, and get plenty of rest.",
+            "weight loss": "Maintain a balanced diet, exercise regularly, and stay hydrated.",
+            "weight gain": "Eat nutrient-rich foods, do strength training, and get enough rest.",
+            "hair loss": "Eat a protein-rich diet, avoid excessive heat styling, and massage the scalp.",
+            "dry skin": "Use moisturizer, stay hydrated, and avoid hot showers.",
+            "oily skin": "Wash your face twice a day, avoid greasy foods, and use oil-free skincare products.",
+            "eczema": "Use fragrance-free moisturizers, avoid hot showers, and wear soft fabrics.",
+            "sunburn": "Apply aloe vera, stay hydrated, and avoid direct sunlight.",
+            "burns": "Cool the area with running water, apply aloe vera, and keep it clean.",
+            "insect bites": "Apply a cold compress, use antihistamines, and avoid scratching.",
+            "bruises": "Apply a cold pack, elevate the area, and rest.",
+            "cuts": "Clean the wound, apply an antiseptic, and cover with a bandage.",
+            "sprains": "Rest, ice the area, compress with a bandage, and elevate.",
+            "dehydration": "Drink water, eat water-rich fruits, and avoid excessive caffeine.",
+            "hangover": "Drink plenty of water, eat light meals, and rest.",
+            "motion sickness": "Look at the horizon, avoid reading, and try ginger candies.",
+            "snoring": "Sleep on your side, avoid alcohol before bed, and maintain a healthy weight.",
+            "bad breath": "Brush twice a day, floss regularly, and drink more water.",
+            "gum disease": "Brush and floss regularly, avoid tobacco, and visit the dentist.",
+            "osteoporosis": "Eat calcium-rich foods, do weight-bearing exercises, and get vitamin D.",
+            "thyroid problems": "Maintain a balanced diet, get regular check-ups, and manage stress.",
+            "PMS": "Eat healthy, exercise, and use a heating pad for cramps.",
+            "UTI": "Drink cranberry juice, stay hydrated, and maintain hygiene.",
+            "kidney stones": "Drink plenty of water, reduce salt intake, and eat calcium-rich foods.",
+            "gallstones": "Eat a high-fiber diet, avoid fatty foods, and stay active.",
+            "liver problems": "Avoid alcohol, eat a balanced diet, and exercise regularly.",
+            "diabetes": "Monitor blood sugar, eat balanced meals, and stay physically active.",
+            "fiber": "Eat whole grains, fruits, and vegetables to improve digestion and heart health.",
+            "iron": "Consume spinach, lentils, and red meat to prevent anemia and boost energy.",
+    "calcium": "Drink milk, eat cheese, and consume leafy greens for strong bones and teeth.",
+    "vitamin C": "Eat citrus fruits, bell peppers, and strawberries to boost immunity and skin health.",
+    "omega-3": "Include fatty fish, walnuts, and flaxseeds for brain and heart health.",
+    "magnesium": "Eat bananas, nuts, and dark chocolate to support muscle function and relaxation.",
+    "zinc": "Consume pumpkin seeds, meat, and dairy to improve immunity and wound healing.",
+    "potassium": "Eat bananas, potatoes, and avocados to maintain healthy blood pressure.",
+    "healthy fats": "Use olive oil, eat avocados, and consume nuts for heart and brain health.",
+    "vitamin D": "Get sunlight exposure and eat salmon, eggs, and fortified dairy to strengthen bones.",
+    "folic acid": "Eat leafy greens, beans, and citrus fruits to support cell growth and pregnancy health.",
+    "vitamin A": "Consume carrots, sweet potatoes, and liver to improve vision and skin health.",
+    "B vitamins": "Include whole grains, meat, and dairy for energy production and brain function.",
+    "selenium": "Eat Brazil nuts, seafood, and eggs for thyroid function and immunity support.",
+    "probiotics": "Consume yogurt, kimchi, and sauerkraut for gut health and digestion.",
+    "prebiotics": "Eat garlic, onions, and bananas to feed healthy gut bacteria.",
+    "iodine": "Use iodized salt and eat seafood to maintain proper thyroid function.",
+    "antioxidants": "Consume berries, dark chocolate, and green tea to fight cell damage.",
+    "collagen": "Eat bone broth, chicken skin, and fish to support skin and joint health.",
+    "choline": "Include eggs, liver, and peanuts to support brain and liver function.",
+    "polyphenols": "Drink green tea, eat dark chocolate, and consume red grapes for anti-inflammatory benefits.",
+    "flavonoids": "Eat apples, onions, and citrus fruits for heart health and reduced inflammation.",
+    "vitamin E": "Consume almonds, sunflower seeds, and spinach to support skin and immune health.",
+    "phosphorus": "Eat dairy, fish, and nuts to support strong bones and teeth.",
+    "copper": "Include shellfish, nuts, and seeds to support red blood cell formation.",
+    "manganese": "Consume whole grains, nuts, and leafy greens to support metabolism.",
+    "chromium": "Eat broccoli, whole grains, and nuts to regulate blood sugar levels.",
+    "lycopene": "Eat tomatoes, watermelon, and pink grapefruit to support prostate and heart health.",
+    "lutein": "Consume kale, eggs, and corn to improve eye health.",
+    "resveratrol": "Eat grapes, blueberries, and peanuts for heart and anti-aging benefits.",
+    "coenzyme Q10": "Include fish, nuts, and meat to support energy production and heart health.",
+    "quercetin": "Eat onions, apples, and berries for anti-inflammatory effects.",
+    "beta-carotene": "Consume carrots, mangoes, and bell peppers to boost immunity and skin health.",
+    "sulforaphane": "Eat broccoli, Brussels sprouts, and cabbage for detoxification and cancer protection.",
+    "lignans": "Include flaxseeds, sesame seeds, and whole grains for hormone balance.",
+    "nitrates": "Eat beets, spinach, and lettuce to improve blood circulation and athletic performance.",
+    "isoflavones": "Consume soy products like tofu and edamame for hormonal balance.",
+    "glutamine": "Eat chicken, fish, and dairy to support muscle recovery and gut health.",
+    "arginine": "Include turkey, peanuts, and chickpeas to improve blood flow and heart health.",
+    "cysteine": "Eat eggs, garlic, and oats to boost antioxidant production.",
+    "tyrosine": "Consume dairy, turkey, and bananas for brain function and stress relief.",
+    "histidine": "Eat meat, fish, and dairy for tissue repair and immune support.",
+    "valine": "Include beans, cheese, and soy for muscle repair and energy.",
+    "leucine": "Consume eggs, fish, and chicken for muscle growth and recovery.",
+    "isoleucine": "Eat nuts, lentils, and chicken for immune function and energy.",
+    "tryptophan": "Include turkey, milk, and nuts to improve mood and sleep quality.",
+    "phenylalanine": "Consume meat, eggs, and dairy for brain function and alertness.",
+    "methionine": "Eat fish, nuts, and eggs to support detoxification and skin health.",
+    "hello": "Hi! Hope you’re having a great day!",
+    "how are you": "I'm doing well! How about you?",
+    "what is your name": "I'm Arjun, your AI assistant here to help!",
+    "where are you from": "I exist in the digital world, always ready to assist you!",
+    "what do you do": "I provide answers, help with tasks, and chat with you!",
+    "how old are you": "I don’t age, but I’m always learning new things!",
+    "what’s the time": "I recommend checking your device for the most accurate time!",
+    "what day is today": "You can check your calendar for today’s date!",
+    "what is your favorite color": "I don’t have a favorite, but I like all colors equally!",
+    "what is your favorite food": "I don’t eat, but I can suggest great food options!",
+    "do you like music": "Yes! I can recommend songs based on your mood!",
+    "what’s your hobby": "Helping people, answering questions, and learning new things!",
+    "do you like reading": "I love reading and can recommend books to you!",
+    "can you tell a joke": "Sure! Why don’t skeletons fight each other? Because they don’t have the guts!",
+    "what languages do you speak": "I understand multiple languages and can assist in many!",
+    "do you have emotions": "I don’t have feelings, but I can understand and respond to yours!",
+    "do you sleep": "No, I’m always here whenever you need help!",
+    "how can I improve my English": "Read books, practice speaking, and learn new words daily!",
+    "what’s the meaning of life": "The meaning of life is different for everyone—find what makes you happy!",
+    "how to be happy": "Surround yourself with positivity, practice gratitude, and do what you love!",
+    "how to reduce stress": "Try deep breathing, meditation, and taking breaks when needed!",
+    "how to stay healthy": "Eat nutritious food, exercise regularly, and get enough sleep!",
+    "how to lose weight": "Maintain a balanced diet, exercise daily, and stay consistent!",
+    "how to gain weight": "Eat calorie-dense foods, increase protein intake, and strength train!",
+    "how to improve memory": "Practice brain exercises, get good sleep, and eat brain-boosting foods!",
+    "how to focus better": "Eliminate distractions, take breaks, and practice mindfulness!",
+    "how to wake up early": "Sleep on time, set an alarm, and maintain a consistent routine!",
+    "how to make friends": "Be friendly, listen well, and show genuine interest in others!",
+    "how to boost confidence": "Practice self-love, set small goals, and celebrate achievements!",
+    "how to be successful": "Stay dedicated, work hard, and never stop learning!",
+    "how to learn faster": "Use active recall, break information into chunks, and practice regularly!",
+    "how to stay motivated": "Set goals, track progress, and remind yourself why you started!",
+    "how to deal with failure": "Learn from it, stay positive, and keep moving forward!",
+    "how to be a good leader": "Communicate well, be supportive, and inspire others!",
+    "how to control anger": "Take deep breaths, think before reacting, and stay calm!",
+    "how to improve communication skills": "Practice speaking, listen actively, and be clear in your words!",
+    "how to stop procrastinating": "Break tasks into small steps, set deadlines, and stay focused!",
+    "how to develop a habit": "Start small, be consistent, and track your progress!",
+    "how to save money": "Plan a budget, avoid unnecessary spending, and track expenses!",
+    "how to be positive": "Focus on the good, practice gratitude, and stay around positive people!",
+    "how to dress well": "Wear clothes that fit well, match colors, and suit the occasion!",
+    "how to be more productive": "Prioritize tasks, take breaks, and avoid distractions!",
+    "how to start a conversation": "Ask open-ended questions and show interest in the other person!",
+    "how to stay hydrated": "Drink at least 8 glasses of water daily and eat water-rich foods!",
+    "how to make good decisions": "Think logically, weigh options, and trust your instincts!",
+    "how to prepare for an interview": "Research the company, practice answers, and dress professionally!",
+    "how to improve writing skills": "Read more, practice daily, and learn grammar rules!",
+    "how to learn coding": "Start with basics, practice coding daily, and build small projects!",
+    "how to become a better listener": "Give full attention, avoid interrupting, and ask questions!",
+    "how to balance work and life": "Set boundaries, plan breaks, and make time for yourself!"
+        };
+
+        let userMessage = input.value.toLowerCase().trim();
+        let response = responses[userMessage] || "I'm here to help! Please describe your health concern.";
+
+        chatBody.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+        input.value = '';
+
+        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the latest message
+    }
+}
+    </script>
+</body>
+</html>

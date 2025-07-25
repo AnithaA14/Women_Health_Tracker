@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Wellness Dashboard</title>
+    <style>
+        /* Reset & Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e0f3a, #2c1985);
+            color: #f5efef;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        
+        /* Navbar */
+        nav {
+            background: linear-gradient(90deg, #240df3, #2c1e57);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Container */
+        .container {
+            margin: 30px auto;
+            width: 350%;
+            max-width: 790px;
+            background-color: rgba(238, 237, 243, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        .containers {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #140f31;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2b1172;
+        }
+
+        #recommendation, #bmi-result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f7f6fc;
+            border: 1px solid #f5f4f7;
+            border-radius: 4px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+
+        .age-buttons button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            background-color: #19074b;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .age-buttons button:hover {
+            background-color: #2b1172;
+        }
+        .diet-section {
+            display: none;
+            margin-top: 20px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        /* images animation*/
+
+        .diet-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .diet-header {
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #f06595);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .diet-section {
+            padding: 20px;
+        }
+
+        .diet-img {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .diet-content {
+            background: #ffe8cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #170949;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .animated-img {
+            animation: bounce 1s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar with Logo -->
+    <nav id="navbar">
+        <img src="logo.jpg" alt="Health Logo">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Health Dashboard</a>
+            <a href="menstrual.html">Menstrual Tracking</a>
+            <a href="mental.html">Mental Health</a>
+            <a href="GeneralChecker.html">General Checker</a>
+        </div>
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+        <h2>Health & Wellness Dashboard</h2>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Enter your age">
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" placeholder="Enter your height">
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight">
+
+        <label for="goal">Health Goal:</label>
+        <select id="goal">
+            <option value="weight_loss">Weight Loss</option>
+            <option value="fitness">Fitness</option>
+            <option value="mental_health">Mental Health</option>
+            <option value="nutrition">Better Nutrition</option>
+        </select>
+
+        <button onclick="generateRecommendation()">Get Recommendation</button>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="bmi-result"></div>
+        <div id="recommendation"></div>
+
+
+        <!-- Additional Fields -->
+    <h2>Calorie Calculator</h2>
+    <label for="gender">Gender:</label>
+    <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+
+    <label for="activity">Activity Level:</label>
+    <select id="activity">
+        <option value="1.2">Sedentary</option>
+        <option value="1.375">Lightly Active</option>
+        <option value="1.55">Moderately Active</option>
+        <option value="1.725">Very Active</option>
+        <option value="1.9">Super Active</option>
+    </select>
+
+    <button onclick="calculateCalories()">Calculate Calories</button>
+    <div id="calorie-result"></div>
+
+    <h2>Water Intake Tracker</h2>
+    <label for="water">Water Consumed (in Liters):</label>
+    <input type="number" id="water" placeholder="Enter water intake">
+    <button onclick="trackWater()">Track Water</button>
+    <div id="water-result"></div>
+
+    <h2>Mental Health Tip</h2>
+    <button onclick="showTip()">Get Tip</button>
+    <div id="mental-tip"></div>
+
+    <!-- Daily Wellness Challenge -->
+<div id="challenge">
+    <h2>🏆 Daily Wellness Challenge</h2>
+    <video id="webcam" width="600" height="500" autoplay></video>
+    <h3 id="current-exercise">Exercise: 20 Squats</h3>
+    <h3>Reps Completed: <span id="rep-count">0</span>/20</h3>
+    <button onclick="startChallenge()">Start Challenge</button>
+</div>
+
+<div class="containers">
+    <h1>Healthy Balanced Diet Based on Age</h1>
+    <p>Select your age group:</p>
+    <div class="age-buttons">
+        <button onclick="showDietPlan('children')">Children (2-12 years)</button>
+        <button onclick="showDietPlan('teenagers')">Teenagers (13-19 years)</button>
+        <button onclick="showDietPlan('adults')">Adults (20-50 years)</button>
+        <button onclick="showDietPlan('seniors')">Seniors (50+ years)</button>
+    </div>
+    
+    <div class="diet-section" id="children">
+        <h2>Children (2-12 years)</h2>
+        <img src="children.jpg" alt="Children Diet Animation" class="animated-img"><br>
+        
+        <h3>1. Dairy Products (Calcium & Growth)</h3>
+        <p>Dairy products are essential for strong bones and teeth. Some good options include milk, cheese, yogurt, and paneer. These provide calcium and protein necessary for proper growth.</p><br>
+    
+        <h3>2. Fruits and Vegetables (Vitamins & Immunity)</h3>
+        <p>Fruits and vegetables supply essential vitamins, minerals, and fiber. Healthy choices include apples, bananas, oranges, mangoes, papayas, carrots, spinach, broccoli, and sweet potatoes. Leafy greens like kale and fenugreek also help in strengthening immunity.</p><br>
+    
+        <h3>3. Whole Grains (Energy & Digestion)</h3>
+        <p>Whole grains are a great source of fiber and carbohydrates, providing long-lasting energy. Healthy options include oats, brown rice, whole wheat bread, multigrain chapati, quinoa, and millets such as ragi and jowar.</p><br>
+    
+        <h3>4. Protein (Muscle Growth & Brain Development)</h3>
+        <p>Proteins help in muscle development and brain function. Good sources include eggs, fish like salmon and tuna, lean chicken, tofu, paneer, soybeans, lentils (dal), chickpeas, and kidney beans.</p><br>
+    
+        <h3>5. Healthy Fats (Brain Function & Energy)</h3>
+        <p>Healthy fats improve brain function and keep skin healthy. Foods rich in good fats include ghee in moderation, olive oil, coconut oil, avocados, almonds, walnuts, and seeds like flaxseeds and chia seeds.</p><br>
+    
+        <h3>6. Hydration (Water & Fluids)</h3>
+        <p>Staying hydrated is essential for digestion and energy. Children should drink plenty of water, fresh fruit juices without added sugar, buttermilk, coconut water, and homemade soups.</p><br>
+    
+        <h3>7. Snacks (Healthy Options)</h3>
+        <p>Instead of junk food, children can enjoy healthy snacks such as homemade popcorn without too much butter, a mix of dry fruits and nuts, vegetable sandwiches made with whole wheat bread, boiled sweet potatoes, fruit smoothies, or peanut butter with banana slices.</p><br>
+    </div>
+    
+    
+
+    <div class="diet-section" id="teenagers">
+        <h2>Teenagers (13-19 years)</h2>
+        <img src="teenagers.jpg" alt="Teenagers Diet Animation" class="animated-img"><br>
+        
+        <h3>1. Protein (Muscle Growth & Strength)</h3>
+        <p>Teenagers need high-protein foods for muscle growth and strength. Good sources include eggs, chicken, fish like salmon and tuna, lean meats, tofu, paneer, lentils (dal), chickpeas, kidney beans, and nuts.</p><br>
+    
+        <h3>2. Iron-Rich Foods (Energy & Red Blood Cells)</h3>
+        <p>Iron is essential to prevent anemia and boost energy levels. Foods rich in iron include spinach, kale, beetroot, beans, lentils, red meat, poultry, and fortified cereals. Vitamin C from citrus fruits helps with better iron absorption.</p><br>
+    
+        <h3>3. Whole Grains (Energy & Digestion)</h3>
+        <p>Whole grains provide fiber and keep digestion healthy. Best choices include brown rice, whole wheat bread, oats, quinoa, multigrain chapati, and millets like ragi and jowar.</p><br>
+    
+        <h3>4. Healthy Fats (Brain Development & Focus)</h3>
+        <p>Healthy fats help with brain development and concentration. Teenagers should consume nuts (almonds, walnuts, cashews), seeds (chia, flaxseeds, pumpkin seeds), avocados, ghee, olive oil, and fatty fish.</p><br>
+    
+        <h3>5. Dairy & Calcium (Bone Strength & Growth)</h3>
+        <p>Calcium is important for bone development. Good sources include milk, cheese, yogurt, paneer, and plant-based alternatives like soy milk and almond milk.</p><br>
+    
+        <h3>6. Hydration (Water & Fluids)</h3>
+        <p>Drinking enough fluids is necessary for proper digestion and energy levels. Water, coconut water, buttermilk, fresh fruit juices (without added sugar), and homemade soups are excellent choices.</p><br>
+    
+        <h3>7. Healthy Snacks (Smart Eating)</h3>
+        <p>Avoid junk food and opt for healthy snacks like fruit smoothies, homemade popcorn (without extra butter), boiled eggs, peanut butter with whole wheat toast, vegetable sandwiches, roasted chickpeas, and yogurt with fruits.</p><br>
+    </div>
+    
+    <div class="diet-section" id="adults">
+        <h2>Adults (20-50 years)</h2>
+        <img src="adults.jpg" alt="Adults Diet Animation" class="animated-img"><br>
+    
+        <h3>1. Balanced Nutrition (Energy & Health)</h3>
+        <p>Adults need a balanced mix of carbohydrates, proteins, healthy fats, vitamins, and minerals to maintain energy levels and overall health. Include a variety of whole grains, lean proteins, and fresh vegetables in daily meals.</p><br>
+    
+        <h3>2. Lean Proteins (Muscle Maintenance & Metabolism)</h3>
+        <p>Proteins help in muscle maintenance and metabolism. Best sources include eggs, lean meats, fish, legumes, tofu, paneer, and nuts like almonds and walnuts.</p><br>
+    
+        <h3>3. Whole Grains (Sustained Energy & Digestion)</h3>
+        <p>Whole grains are rich in fiber and provide long-lasting energy. Include brown rice, quinoa, whole wheat chapatis, multigrain bread, and millets.</p><br>
+    
+        <h3>4. Fruits & Vegetables (Vitamins & Antioxidants)</h3>
+        <p>Eating a variety of colorful fruits and vegetables ensures the body gets essential vitamins and antioxidants. Opt for leafy greens, carrots, tomatoes, bell peppers, citrus fruits, and berries.</p><br>
+    
+        <h3>5. Healthy Fats (Heart & Brain Health)</h3>
+        <p>Healthy fats from olive oil, nuts, avocados, seeds (flaxseeds, chia seeds), and fatty fish like salmon help maintain heart and brain function.</p><br>
+    
+        <h3>6. Hydration (Water & Detox)</h3>
+        <p>Drinking at least 8 glasses of water daily is essential. Herbal teas, fresh coconut water, and homemade smoothies can also be included.</p><br>
+    
+        <h3>7. Lifestyle Tips (Exercise & Moderation)</h3>
+        <p>Regular physical activity, portion control, and reducing sugar, salt, and processed foods help maintain long-term health.</p><br>
+    </div>
+    
+    <div class="diet-section" id="seniors">
+        <h2>Seniors (50+ years)</h2>
+        <img src="seniors.jpg" alt="Seniors Diet Animation" class="animated-img"><br>
+    
+        <h3>1. Bone Health (Calcium & Vitamin D)</h3>
+        <p>To maintain strong bones, include dairy products, fortified plant-based milk, almonds, and sesame seeds. Sun exposure is also important for Vitamin D.</p><br>
+    
+        <h3>2. Easy-to-Digest Foods (Gut Health & Nutrition)</h3>
+        <p>As digestion slows with age, soft and nutrient-rich foods such as cooked vegetables, soups, dal, and whole grains like oats and soft rice are recommended.</p><br>
+    
+        <h3>3. Protein Intake (Muscle Strength & Repair)</h3>
+        <p>Protein-rich foods like eggs, lentils, fish, cottage cheese, and lean meats are crucial for maintaining muscle strength.</p><br>
+    
+        <h3>4. Heart-Healthy Foods (Cholesterol & Blood Pressure)</h3>
+        <p>Low-fat dairy, nuts, seeds, whole grains, and healthy fats from olive oil and flaxseeds support heart health.</p><br>
+    
+        <h3>5. Hydration (Preventing Dehydration)</h3>
+        <p>Seniors should drink enough water, herbal teas, and fresh fruit juices without added sugar to stay hydrated and prevent kidney issues.</p><br>
+    
+        <h3>6. Brain Health (Memory & Cognition)</h3>
+        <p>Foods rich in Omega-3 fatty acids like walnuts, fish, and chia seeds help improve memory and brain function.</p><br>
+    
+        <h3>7. Lifestyle Tips (Exercise & Regular Checkups)</h3>
+        <p>Light exercise, daily walks, and regular health checkups ensure overall well-being.</p><br>
+    </div>
+    
+</div>
+    </div>
+    <!-- Include TensorFlow.js and PoseNet -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
+    <script>
+        function generateRecommendation() {
+            const age = document.getElementById('age').value;
+            const goal = document.getElementById('goal').value;
+            const recommendation = document.getElementById('recommendation');
+
+            let advice = '';
+
+            if (!age) {
+                recommendation.innerHTML = 'Please enter your age.';
+                return;
+            }
+
+            switch (goal) {
+                case 'weight_loss':
+                    advice = 'To lose weight, do cardio exercises like running or cycling at least four times a week.Eat fewer calories than you burn, but make sure to have nutritious meals.Avoid processed foods and sugary drinks, as they add extra calories.Stay consistent and patient, as weight loss takes time.';
+                    break;
+                case 'fitness':
+                    advice = 'For overall fitness, combine strength training and cardio exercises.Strength training helps build muscles, while cardio improves heart health.Get at least 7 hours of sleep every night to allow your body to recover.Drink plenty of water and stretch before and after workouts.';
+                    break;
+                case 'mental_health':
+                    advice = 'Take time each day to relax and clear your mind with deep breathing.Practice mindfulness by focusing on the present and letting go of stress.A good sleep schedule is important for your mental well-being.Talk to someone if you feel overwhelmed, and don’t hesitate to ask for help.';
+                    break;
+                case 'nutrition':
+                    advice = 'Eat more fruits, vegetables, and whole grains for a balanced diet.Avoid junk food and sugary snacks, as they don’t provide essential nutrients.Drink plenty of water to stay hydrated and support digestion.Plan your meals ahead to make healthier food choices.';
+                    break;
+            }
+
+            recommendation.innerHTML = `<strong>Personalized Advice:</strong> ${advice}`;
+        }
+
+        function calculateBMI() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const bmiResult = document.getElementById('bmi-result');
+
+            if (!height || !weight) {
+                bmiResult.innerHTML = 'Please enter both height and weight.';
+                return;
+            }
+
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters ** 2)).toFixed(2);
+
+            let category = '';
+            if (bmi < 18.5) {
+                category = 'Underweight';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                category = 'Normal weight';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                category = 'Overweight';
+            } else {
+                category = 'Obese';
+            }
+
+            bmiResult.innerHTML = `<strong>BMI:</strong> ${bmi} (${category})`;
+        }
+
+        function calculateCalories() {
+        const age = document.getElementById('age').value;
+        const height = document.getElementById('height').value;
+        const weight = document.getElementById('weight').value;
+        const gender = document.getElementById('gender').value;
+        const activity = parseFloat(document.getElementById('activity').value);
+        const result = document.getElementById('calorie-result');
+
+        if (!age || !height || !weight) {
+            result.innerHTML = 'Please fill in all fields.';
+            return;
+        }
+
+        let bmr = gender === 'male' 
+            ? 10 * weight + 6.25 * height - 5 * age + 5 
+            : 10 * weight + 6.25 * height - 5 * age - 161;
+
+        const calories = Math.round(bmr * activity);
+        result.innerHTML = `<strong>Daily Calorie Needs:</strong> ${calories} kcal`;
+    }
+
+    function trackWater() {
+        const water = document.getElementById('water').value;
+        const result = document.getElementById('water-result');
+        result.innerHTML = water >= 2 
+            ? 'Well done! You stayed hydrated today' 
+            : 'Don’t forget to hydrate! Drink a bit more water today';
+    }
+
+    function showTip() {
+        const tips = [
+            'Start your day by appreciating something good about yourself.If you meet someone, give them a kind and genuine compliment.Simple words can brighten someone’s mood and boost confidence.Practicing kindness makes you feel happier and more positive.Make it a habit to spread positivity wherever you go.',
+            'Take a deep breath in through your nose and slowly exhale.Focus on your breathing to calm your mind and reduce stress.Deep breathing improves oxygen flow and relaxes your body.Practice this for a few minutes whenever you feel overwhelmed.It’s a simple way to refresh your mind and improve focus.',
+            'Every day, take a moment to list three things you appreciate.They can be big or small, like a good meal or a kind gesture.Practicing gratitude helps you focus on the positives in life.Over time, it can improve your happiness and reduce stress.Make it a habit to end your day on a grateful note.',
+            'Step outside to get some fresh air and natural sunlight.Being in nature helps reduce stress and improves your mood.A short walk or sitting in a park can refresh your mind.Sunlight boosts vitamin D levels, which is good for your health.Try to make outdoor time a daily habit for overall well-being.',
+            'Go to bed and wake up at the same time every day.A regular sleep pattern improves your energy and focus.Avoid screens before bedtime to help you fall asleep faster.Create a relaxing bedtime routine, like reading or meditation.Quality sleep is essential for a healthy mind and body.',
+            'Walking is a simple way to stay active and improve your health.Even a 10-minute walk can boost your mood and energy levels.Try walking after meals to aid digestion and reduce stress.If possible, take the stairs or walk instead of using transport.Regular walking keeps your body moving and mind refreshed.',
+            'Sit quietly and focus on your breathing, thoughts, or surroundings.Let go of stress and bring your attention to the present moment.Mindfulness helps you stay calm, focused, and less overwhelmed.You can practice it while eating, walking, or even listening to music.Just five minutes daily can make a big difference in your mindset.',
+            'Staring at screens for too long can strain your eyes.Every hour, look away from your screen for a few minutes.Blink often and focus on something far away to relax your eyes.Use this break to stretch, walk, or drink some water.Regular breaks improve focus, reduce fatigue, and prevent headaches.',
+            'Stretching helps loosen tight muscles and improves flexibility.It increases blood flow, making you feel more active and refreshed.Try simple stretches for your neck, shoulders, and legs.Morning stretching can wake up your body, while evening stretches help relax.Just 10 minutes a day can reduce stiffness and boost your energy.',
+            'Start your day by writing down a few simple goals.Prioritize tasks to avoid feeling overwhelmed or distracted.Breaking big tasks into smaller steps makes them easier to complete.Achieving small goals each day gives a sense of accomplishment.Stay consistent, and you’ll develop better time management skills.'
+
+        ];
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        document.getElementById('mental-tip').innerHTML = `💡 ${randomTip}`;
+    }
+
+    let net, repCount = 0, currentExercise = 0;
+const exercises = [
+    { name: "20 Squats", targetReps: 20, message: "Great Job! Keep Going!", image: "./Health/squads.jpg" },
+    { name: "15 Jumping Jacks", targetReps: 15, message: "You're Crushing It!", image: "./Health/jumping_jacks.jpg" },
+    { name: "10 Push-Ups", targetReps: 10, message: "Finish Strong!", image: "./Health/push_up.jpg" }
+];
+
+async function startChallenge() {
+    const video = document.getElementById('webcam');
+    const repDisplay = document.getElementById('rep-count');
+    const exerciseDisplay = document.getElementById('current-exercise');
+    const motivationText = document.getElementById('motivation');
+    const boostImage = document.getElementById('boost-image');
+
+    // Load PoseNet
+    net = await posenet.load();
+
+    // Access Webcam
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        video.srcObject = stream;
+    });
+
+    // Pose Detection Loop
+    video.addEventListener('loadeddata', () => {
+        detectPose(video);
+    });
+
+    async function detectPose(video) {
+        const pose = await net.estimateSinglePose(video, { flipHorizontal: false });
+
+        // Example: Count squats using knee position
+        const leftKnee = pose.keypoints.find(p => p.part === 'leftKnee');
+        const rightKnee = pose.keypoints.find(p => p.part === 'rightKnee');
+
+        if (leftKnee && rightKnee && leftKnee.score > 0.7 && rightKnee.score > 0.7) {
+            if (leftKnee.position.y > 400 && rightKnee.position.y > 400) {
+                if (repCount < exercises[currentExercise].targetReps) {
+                    repCount++;
+                    repDisplay.textContent = repCount;
+                }
+
+                // Move to next exercise after reaching target
+                if (repCount >= exercises[currentExercise].targetReps) {
+                    motivationText.textContent = exercises[currentExercise].message;
+                    boostImage.src = exercises[currentExercise].image;
+                    boostImage.style.display = 'block';
+
+                    currentExercise++;
+                    if (currentExercise < exercises.length) {
+                        setTimeout(() => {
+                            repCount = 0;
+                            exerciseDisplay.textContent = `Exercise: ${exercises[currentExercise].name}`;
+                            repDisplay.textContent = repCount;
+                            motivationText.textContent = '';
+                            boostImage.style.display = 'none';
+                        }, 2000);
+                    } else {
+                        // Final Congratulations
+                        exerciseDisplay.textContent = "🎉 Challenge Completed! You're unstoppable!";
+                        motivationText.textContent = "🏆 Well Done, Champion!";
+                        boostImage.src = "./Health/congrats.jpg"; // Replace with a real image
+                    }
+                }
+            }
+        }
+        requestAnimationFrame(() => detectPose(video));
+    }
+}
+
+function showDietPlan() {
+    const age = document.getElementById('age').value;
+
+    // Hide all diet sections initially
+    document.querySelectorAll('.diet-section').forEach(section => section.style.display = 'none');
+
+    if (!age || age < 1) {
+        alert("Please enter a valid age.");
+        return;
+    }
+
+    if (age >= 2 && age <= 12) {
+        document.getElementById('children').style.display = 'block';
+    } else if (age >= 13 && age <= 19) {
+        document.getElementById('teenagers').style.display = 'block';
+    } else if (age >= 20 && age <= 50) {
+        document.getElementById('adults').style.display = 'block';
+    } else if (age > 50) {
+        document.getElementById('seniors').style.display = 'block';
+    }
+}
+function showDietPlan(sectionId) {
+            // Hide all diet sections
+            document.querySelectorAll('.diet-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+    </script>
+
+</body>
+</html>
